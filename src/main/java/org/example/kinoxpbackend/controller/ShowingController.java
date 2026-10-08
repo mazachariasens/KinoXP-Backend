@@ -1,4 +1,5 @@
 package org.example.kinoxpbackend.controller;
 
-public class ShowingController {
+public class
+ShowingController {
 }
