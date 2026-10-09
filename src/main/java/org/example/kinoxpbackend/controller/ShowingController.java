@@ -1,5 +1,5 @@
 package org.example.kinoxpbackend.controller;
-import com.example.kinoxpbackend.dto.ShowingResponse;
+import org.example.kinoxpbackend.dto.response.ShowingResponse;
 
 import org.example.kinoxpbackend.service.ShowingService;
 import org.springframework.web.bind.annotation.*;
@@ -21,4 +21,4 @@ public class ShowingController {
         return showingService.getAllShowings();
     }
 }
-}
+

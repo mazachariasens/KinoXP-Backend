@@ -1,9 +1,10 @@
 package org.example.kinoxpbackend.service;
 
-import org.example.kinoxpbackend.dto.response.ShowingReponse;
+import org.example.kinoxpbackend.dto.response.ShowingResponse;
 import org.example.kinoxpbackend.entity.Showing;
 import org.example.kinoxpbackend.enums.ShowingStatus;
 import org.example.kinoxpbackend.repository.ShowingRepository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,13 +18,13 @@ public class ShowingService {
         this.showingRepository = showingRepository;
     }
     @Transactional(readOnly = true)
-    public List<ShowingReponse> getAllShowings(){
+    public List<ShowingResponse> getAllShowings(){
         return showingRepository.findAllByOrderByStartsAtAsc().stream().map(this::toReponse).toList();
 
     }
 
-    private ShowingReponse toReponse(Showing showing) {
-        return new ShowingReponse(showing.getShowingId(),
+    private ShowingResponse toReponse(Showing showing) {
+        return new ShowingResponse(showing.getShowingId(),
                 showing.getStartsAt(), showing.getStatus(), showing.getMovie().getTitle(), showing.getTheater().getName()
         );
     }

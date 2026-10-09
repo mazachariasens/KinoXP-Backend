@@ -4,7 +4,7 @@ import org.example.kinoxpbackend.enums.ShowingStatus;
 
 import java.time.LocalDateTime;
 
-public record ShowingReponse(
+public record ShowingResponse(
         Long showingId,
         LocalDateTime startsAt,
         ShowingStatus status,

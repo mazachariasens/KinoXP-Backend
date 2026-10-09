@@ -1,10 +1,11 @@
 package org.example.kinoxpbackend.service;
-package org.example.kinoxpbackend.dto.response;
+
 import org.example.kinoxpbackend.enums.ShowingStatus;
 import org.example.kinoxpbackend.entity.Movie;
 import org.example.kinoxpbackend.entity.Showing;
 import org.example.kinoxpbackend.entity.Theater;
 import org.example.kinoxpbackend.repository.ShowingRepository;
+import org.example.kinoxpbackend.dto.response.ShowingResponse;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
