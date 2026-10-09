@@ -1,9 +1,8 @@
 package org.example.kinoxpbackend.controller;
 
-import org.example.kinoxpbackend.dto.CreateMovieRequest;
+import org.example.kinoxpbackend.dto.request.CreateMovieRequest;
 import org.example.kinoxpbackend.entity.Movie;
 import org.example.kinoxpbackend.service.MovieService;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

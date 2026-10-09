@@ -1,6 +1,6 @@
 package org.example.kinoxpbackend.controller;
 
-
+import org.example.kinoxpbackend.dto.response.TheaterResponse;
 import org.example.kinoxpbackend.entity.Theater;
 import org.example.kinoxpbackend.service.TheaterService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +20,8 @@ public class TheaterController {
     }
 
     @GetMapping // Endpoint to retrieve all theaters.
-    public List<Theater> getAllTheaters() {
+    public List<TheaterResponse> getAllTheaters() { // Vi ændrede return type fra List<Theater> til List<TheaterResponse> for at returnere DTO response i stedet for entity.
         return theaterService.getAllTheaters(); // Call the service method to get all theaters and return the result.
-    }
-
+    } // denne metode vil returnere et JSON-objekt med alle biografer, som indeholder capacity i stedet for kun Theater entity.
+ // i TheaterService, har vi tilføjet en metode der tager et Theater-objekt fra databasen og laver det om til et TheaterResponse-object, som indeholder capacity. Dette gør vi for at undgå at returnere entity
 }

@@ -1,5 +1,5 @@
 package org.example.kinoxpbackend.service;
-import org.example.kinoxpbackend.dto.CreateMovieRequest;
+import org.example.kinoxpbackend.dto.request.CreateMovieRequest;
 import org.example.kinoxpbackend.entity.Movie;
 import org.example.kinoxpbackend.repository.MovieRepository;
 import org.springframework.stereotype.Service;
