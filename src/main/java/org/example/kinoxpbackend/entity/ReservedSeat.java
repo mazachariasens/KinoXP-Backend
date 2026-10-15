@@ -4,23 +4,17 @@ package org.example.kinoxpbackend.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(
-        name = "RESERVED_SEAT",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        columnNames = {"showing_id", "seat_id"}
-                )
-        }
-)
+@Table(name = "RESERVED_SEAT")
 public class ReservedSeat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reserved_seat_id")
     private Long reservedSeatId;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "showing_id", nullable = false)
-    private Showing showing;
+    @JoinColumn(name = "reservation_id", nullable = false)
+    private Reservation reservation;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "seat_id", nullable = false)
@@ -29,8 +23,8 @@ public class ReservedSeat {
     public ReservedSeat() {
     }
 
-    public ReservedSeat(Showing showing, Seat seat) {
-        this.showing = showing;
+    public ReservedSeat(Reservation reservation, Seat seat) {
+        this.reservation = reservation;
         this.seat = seat;
     }
 
@@ -38,12 +32,12 @@ public class ReservedSeat {
         return reservedSeatId;
     }
 
-    public Showing getShowing() {
-        return showing;
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setShowing(Showing showing) {
-        this.showing = showing;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     public Seat getSeat() {

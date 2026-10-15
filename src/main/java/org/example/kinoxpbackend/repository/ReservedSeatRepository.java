@@ -13,9 +13,11 @@ public interface ReservedSeatRepository
     @Query("""
         select rs.seat.seatId
         from ReservedSeat rs
-        where rs.showing.showingId = :showingId
+        where rs.reservation.showing.showingId = :showingId
+                and rs.reservation.status =
+                        org.example.kinoxpbackend.enums.ReservationStatus.ACTIVE
         """)
-    List<Long> findReservedSeatIdsByShowingId(
+    List<Long> findActiveReservedSeatIdsByShowingId(
             @Param("showingId") Long showingId
     );
 }
