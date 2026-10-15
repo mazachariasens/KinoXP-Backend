@@ -45,7 +45,7 @@ public class SeatService {
         Set<Long> reservedSeatIds =
                 Set.copyOf(
                         reservedSeatRepository
-                                .findReservedSeatIdsByShowingId(showingId)
+                                .findActiveReservedSeatIdsByShowingId(showingId)
                 );
 
         return seats.stream()
