@@ -25,6 +25,7 @@ public class ShowingController {
     public List<ShowingResponse> getAllShowings() {
         return showingService.getAllShowings();
     }
+
     @PostMapping
     public ResponseEntity<?> createShowing(
             @RequestBody CreateShowingRequest request) {
@@ -57,12 +58,12 @@ public class ShowingController {
             return ResponseEntity
                     .badRequest()
                     .body(Map.of("error", e.getMessage()));
+        } catch (
+                NoSuchElementException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", e.getMessage()));
         }
-    catch (
-    NoSuchElementException e) {
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", e.getMessage()));
     }
 }
 
