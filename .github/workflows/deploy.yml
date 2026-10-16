@@ -1,0 +1,68 @@
+name: Deploy KinoXP
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      AZURE_WEBHOOK_URL:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kinoxp-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hent backend
+        uses: actions/checkout@v4
+        with:
+          repository: mazachariasens/KinoXP-Backend
+          ref: main
+          path: backend
+
+      - name: Hent frontend
+        uses: actions/checkout@v4
+        with:
+          repository: mazachariasens/KinoXP-frontend
+          ref: main
+          path: frontend
+
+      - name: Kopier frontend til Docker-bygningen
+        run: |
+          mkdir -p backend/src/main/resources/static
+          cp frontend/index.html backend/src/main/resources/static/
+          cp -R frontend/css backend/src/main/resources/static/
+          cp -R frontend/js backend/src/main/resources/static/
+          cp -R frontend/index backend/src/main/resources/static/
+
+      - name: Log ind på Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Byg og upload Docker-image
+        working-directory: backend
+        run: |
+          docker build -t muffinmandem/kinoxp-backend:latest .
+          docker push muffinmandem/kinoxp-backend:latest
+
+      - name: Giv Azure besked
+        env:
+          AZURE_WEBHOOK_URL: ${{ secrets.AZURE_WEBHOOK_URL }}
+        run: |
+            curl --fail --silent --show-error \
+            --output /dev/null \
+            --request POST "$AZURE_WEBHOOK_URL"
