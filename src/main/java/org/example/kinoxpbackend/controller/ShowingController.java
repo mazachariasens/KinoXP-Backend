@@ -65,5 +65,4 @@ public class ShowingController {
                 .body(Map.of("error", e.getMessage()));
     }
 }
-}
 
