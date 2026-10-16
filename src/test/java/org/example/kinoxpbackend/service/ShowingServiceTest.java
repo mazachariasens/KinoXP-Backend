@@ -7,6 +7,7 @@ import org.example.kinoxpbackend.entity.Theater;
 import org.example.kinoxpbackend.repository.ShowingRepository;
 import org.example.kinoxpbackend.dto.response.ShowingResponse;
 
+import org.example.kinoxpbackend.repository.ShowingRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
