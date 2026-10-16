@@ -4,6 +4,14 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      AZURE_WEBHOOK_URL:
+        required: true
 
 permissions:
   contents: read
@@ -20,6 +28,8 @@ jobs:
       - name: Hent backend
         uses: actions/checkout@v4
         with:
+          repository: mazachariasens/KinoXP-Backend
+          ref: main
           path: backend
 
       - name: Hent frontend
