@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/showings")
@@ -57,6 +58,11 @@ public class ShowingController {
                     .badRequest()
                     .body(Map.of("error", e.getMessage()));
         }
+    catch (
+    NoSuchElementException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", e.getMessage()));
     }
 }
 }
