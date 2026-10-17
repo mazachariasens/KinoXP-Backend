@@ -1,6 +1,7 @@
 package org.example.kinoxpbackend.service;
 
 import org.example.kinoxpbackend.dto.request.CreateReservationRequest;
+import org.example.kinoxpbackend.dto.response.ReservationDetailsResponse;
 import org.example.kinoxpbackend.dto.response.ReservationResponse;
 import org.example.kinoxpbackend.entity.Reservation;
 import org.example.kinoxpbackend.entity.ReservedSeat;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -89,7 +91,7 @@ public class ReservationService {
         //Kontroller at alle sæder tilhører forestillingens sal.
 
         Long theaterId = showing.getTheater().getTheaterId();
-        Boolean seatsBelongToTheater = seats.stream()
+        boolean seatsBelongToTheater = seats.stream()
                 .allMatch(seat -> seat.getTheater().getTheaterId().equals(theaterId));
 
         if (!seatsBelongToTheater) {
@@ -144,5 +146,68 @@ public class ReservationService {
                         .map(Seat::getSeatId)
                         .toList()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationDetailsResponse> getActiveReservations(
+            Long showingId) {
+
+        if (!showingRepository.existsById(showingId)) {
+            throw new NoSuchElementException(
+                    "Forestillingen findes ikke."
+            );
+        }
+
+        return reservationRepository
+                .findByShowing_ShowingIdAndStatusOrderByCreatedAtDesc(
+                        showingId,
+                        ReservationStatus.ACTIVE
+                )
+                .stream()
+                .map(reservation -> {
+                    List<String> seats =
+                            reservedSeatRepository
+                                    .findAllByReservation_ReservationId(
+                                            reservation.getReservationId()
+                                    )
+                                    .stream()
+                                    .map(rs ->
+                                            "Række "
+                                                    + rs.getSeat().getRowNumber()
+                                                    + ", sæde "
+                                                    + rs.getSeat().getSeatNumber()
+                                    )
+                                    .toList();
+
+                    return new ReservationDetailsResponse(
+                            reservation.getReservationId(),
+                            reservation.getCustomerName(),
+                            reservation.getCustomerPhone(),
+                            reservation.getCreatedAt(),
+                            reservation.getStatus(),
+                            seats
+                    );
+                })
+                .toList();
+    }
+
+    @Transactional
+    public void cancelReservation(Long reservationId) {
+        Reservation reservation = reservationRepository
+                .findById(reservationId)
+                .orElseThrow(() ->
+                        new NoSuchElementException(
+                                "Reservation findes ikke."
+                        )
+                );
+
+        if (reservation.getStatus() == ReservationStatus.CANCELLED) {
+            throw new IllegalArgumentException(
+                    "Reservationen er allerede annulleret."
+            );
+        }
+
+        reservation.setStatus(ReservationStatus.CANCELLED);
+        reservationRepository.save(reservation);
     }
 }

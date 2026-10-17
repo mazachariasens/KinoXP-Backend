@@ -20,4 +20,8 @@ public interface ReservedSeatRepository
     List<Long> findActiveReservedSeatIdsByShowingId(
             @Param("showingId") Long showingId
     );
+
+    List<ReservedSeat> findAllByReservation_ReservationId(
+            Long reservationId
+    );
 }
