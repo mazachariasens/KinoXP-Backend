@@ -3,6 +3,8 @@ import org.example.kinoxpbackend.dto.response.ShowingResponse;
 
 import org.example.kinoxpbackend.dto.request.CreateShowingRequest;
 import org.example.kinoxpbackend.entity.Showing;
+import org.example.kinoxpbackend.repository.ShowingRepository;
+import org.example.kinoxpbackend.service.ReservationService;
 import org.example.kinoxpbackend.service.ShowingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,11 @@ import java.util.NoSuchElementException;
 public class ShowingController {
 
     private final ShowingService showingService;
+    private final ReservationService reservationService;
 
-    public ShowingController(ShowingService showingService) {
+    public ShowingController(ShowingService showingService, ReservationService reservationService) {
         this.showingService = showingService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping
@@ -68,6 +72,18 @@ public class ShowingController {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/{showingId}/reservations")
+    public ResponseEntity<?> getActiveReservations(
+            @PathVariable Long showingId) {
+        try {
+            return ResponseEntity.ok(
+                    reservationService.getActiveReservations(showingId)
+            );
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
         }
     }
 }
