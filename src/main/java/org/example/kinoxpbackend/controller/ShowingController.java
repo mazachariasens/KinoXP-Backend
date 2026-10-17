@@ -26,11 +26,12 @@ public class ShowingController {
     public List<ShowingResponse> getAllShowings() {
         return showingService.getAllShowings();
     }
+
     @PostMapping
     public ResponseEntity<?> createShowing(
             @RequestBody CreateShowingRequest request) {
         try {
-            Showing showing = showingService.createShowing(
+            showingService.createShowing(
                     request.getMovieId(),
                     request.getTheaterId(),
                     request.getStartsAt()
@@ -39,7 +40,7 @@ public class ShowingController {
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(showing);
+                    .build();
 
 
         } catch (IllegalArgumentException e) {

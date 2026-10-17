@@ -19,12 +19,12 @@ public class Showing {
     private ShowingStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id", referencedColumnName = "id",
+    @JoinColumn(name = "movie_id",
             nullable = false)
     private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "theater_id", referencedColumnName = "theaterId",
+    @JoinColumn(name = "theater_id",
             nullable = false)
     private Theater theater;
 
