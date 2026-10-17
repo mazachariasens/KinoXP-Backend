@@ -45,7 +45,6 @@ jobs:
           cp frontend/index.html backend/src/main/resources/static/
           cp -R frontend/css backend/src/main/resources/static/
           cp -R frontend/js backend/src/main/resources/static/
-          cp -R frontend/index backend/src/main/resources/static/
 
       - name: Log ind på Docker Hub
         uses: docker/login-action@v3
