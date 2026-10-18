@@ -21,6 +21,20 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
+    @GetMapping
+    public ResponseEntity<?> getActiveReservations(
+            @RequestParam("showingId") Long showingId) {
+
+        try {
+            return ResponseEntity.ok(
+                    reservationService.getActiveReservations(showingId)
+            );
+        }catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+
     @PostMapping //Post forespørgsel til /api/reservations for at oprette en ny reservation
     @ResponseStatus(HttpStatus.CREATED)
     public ReservationResponse createReservation(
